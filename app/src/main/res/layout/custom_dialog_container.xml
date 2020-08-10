@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sign_in_to_continue"
         android:fontFamily="sans-serif-condensed-medium"
+        android:drawableEnd="@drawable/ic_round_arrow_forward_24"
         android:textAllCaps="false"
         android:textSize="14sp"
         android:layout_marginTop="16dp"
