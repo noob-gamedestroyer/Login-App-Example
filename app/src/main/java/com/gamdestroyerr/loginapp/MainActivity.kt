@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         passwordTxtInputLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
         setPasswordTxtInput.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
         confirmPasswordTxtInput.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+
+        //this statement below hides the signIn and register button to show above the bottom sheet
         bottomSheetContainer.elevation = 6f
 
         val factory = LayoutInflater.from(this)
@@ -39,11 +41,23 @@ class MainActivity : AppCompatActivity() {
                     cancelBtn.rotation = (slideOffset * 135)
                 }
 
+                @SuppressLint("UseCompatLoadingForDrawables")
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
 
                     signUpBtn.setOnClickListener {
-                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                        showDialog(view1)
+
+                        signUpBtn.visibility = View.INVISIBLE
+                        val dialog = MaterialAlertDialogBuilder(this@MainActivity)
+                            .setView(view1)
+                            .setBackground(getDrawable(R.drawable.rounded_dialog))
+                            .setCancelable(false)
+                            .show()
+
+                        view1.dialogBtn.setOnClickListener {
+                            dialog.dismiss()
+                            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                            signUpBtn.visibility = View.VISIBLE
+                        }
                     }
 
                 }
@@ -57,20 +71,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    fun showDialog(view1: View) {
-
-        val dialog = MaterialAlertDialogBuilder(this)
-            .setView(view1)
-            .setBackground(getDrawable(R.drawable.rounded_dialog))
-            .setCancelable(false)
-            .show()
-
-        view1.dialogBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
-    }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
 
