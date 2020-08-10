@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
 
                     signUpBtn.setOnClickListener {
-
                         signUpBtn.visibility = View.INVISIBLE
+
                         val dialog = MaterialAlertDialogBuilder(this@MainActivity)
                             .setView(view1)
                             .setBackground(getDrawable(R.drawable.rounded_dialog))
