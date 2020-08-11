@@ -62,7 +62,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailTxt"
+            android:id="@+id/emailTxtRegister"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,9 +109,10 @@
             app:helperTextEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/emailTxt">
+            app:layout_constraintTop_toBottomOf="@id/emailTxtRegister">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/setPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -141,10 +142,27 @@
             app:layout_constraintTop_toBottomOf="@id/setPasswordTxtInput">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/passwordMatchConfirmation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/password_mismatch"
+            android:visibility="invisible"
+            android:drawablePadding="4dp"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_round_error_24"
+            android:textColor="@color/error"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTxtInput"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/signUpBtn"
@@ -158,15 +176,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/snackbarContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="200dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

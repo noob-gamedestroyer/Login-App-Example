@@ -13,4 +13,6 @@
     <string name="you_have_successfully_registered">You have successfully registered.</string>
     <string name="cancel">Cancel</string>
     <string name="sign_in_to_continue">Sign In to continue</string>
+    <string name="password_mismatch">Password Mismatch</string>
+    <string name="max_lenth">Max Length 8</string>
 </resources>
