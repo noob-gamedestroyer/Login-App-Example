@@ -15,6 +15,9 @@
     <string name="sign_in_to_continue">Sign In to continue</string>
     <string name="password_mismatch">Password Mismatch</string>
     <string name="max_lenth">Max Length 8</string>
-    <string name="done">done</string>
+    <string name="done">Done</string>
     <string name="not_empty_password">Password or Email field cannot be empty</string>
+    <string name="send_reset_link">Send Link</string>
+    <string name="enter_email_id">Enter Email Id</string>
+    <string name="sent">Resend</string>
 </resources>
