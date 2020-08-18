@@ -20,4 +20,15 @@
     <string name="send_reset_link">Send Link</string>
     <string name="enter_email_id">Enter Email Id</string>
     <string name="sent">Resend</string>
+    <string name="dummy_name">Dummy Name</string>
+    <string name="name">Name:</string>
+    <string name="email_new">Email:</string>
+    <string name="account_options">Account Options</string>
+    <string name="update_account_details">Update Account Details</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="example_email">example@example.com</string>
+    <string name="email_verification_status">Email Verification:</string>
+    <string name="True">true</string>
+    <string name="False">false</string>
 </resources>

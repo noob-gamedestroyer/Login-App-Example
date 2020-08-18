@@ -1,8 +1,11 @@
 package com.gamdestroyerr.loginapp
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -14,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.custom_register_dialog_container.view.*
 import kotlinx.android.synthetic.main.custom_reset_password_dialog.view.*
@@ -25,18 +29,17 @@ import kotlinx.coroutines.tasks.await
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private var check: Boolean= false
-
+    private var check: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
         auth = FirebaseAuth.getInstance()
 
-        var newPass:String?
-        var conPass:String?
+        setContentView(R.layout.activity_login)
+
+        var newPass: String?
+        var conPass: String?
 
         val mBottomSheetBehavior = BottomSheetBehavior.from(registerBottomSheet)
         passwordTxtInputLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
@@ -47,21 +50,17 @@ class LoginActivity : AppCompatActivity() {
            above the bottom sheet */
         bottomSheetContainer.elevation = 6f
 
-        /* To inflate custom dialog layout file to inflate in a view and
-         then the view is passed to the dialog builder */
-        val factory = LayoutInflater.from(this)
-        val view1 :View = factory.inflate(R.layout.custom_register_dialog_container, null)
-
         //----------------------------------------onClick Listeners------------------------------------------------------------------Start-------
         registerBtn.setOnClickListener {
 
             mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             mBottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback(){
+                BottomSheetBehavior.BottomSheetCallback() {
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
                     cancelBtn.rotation = (slideOffset * 135)
                 }
+
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                 }
             })
@@ -75,19 +74,19 @@ class LoginActivity : AppCompatActivity() {
                 passwordMatchConfirmation.text = getString(R.string.not_empty_password)
                 passwordMatchConfirmation.visibility = View.VISIBLE
             } else if (newPass == conPass) {
-                registerUser(newPass!!,view1,mBottomSheetBehavior)
+                registerUser(newPass!!, mBottomSheetBehavior)
                 passwordMatchConfirmationMain.visibility = View.INVISIBLE
-            } else if (newPass != conPass){
+            } else if (newPass != conPass) {
                 passwordMatchConfirmation.text = getString(R.string.password_mismatch)
                 passwordMatchConfirmation.visibility = View.VISIBLE
-            } else{
+            } else {
                 passwordMatchConfirmation.visibility = View.INVISIBLE
             }
         }
 
         signInBtn.setOnClickListener {
             val email: String? = emailTxtInputLayout.editText?.text.toString()
-            val password:String? = passwordTxtInputLayout.editText?.text.toString()
+            val password: String? = passwordTxtInputLayout.editText?.text.toString()
 
             if (email.isNullOrBlank() || password.isNullOrBlank()) {
                 passwordMatchConfirmationMain.text = getString(R.string.not_empty_password)
@@ -100,7 +99,8 @@ class LoginActivity : AppCompatActivity() {
 
         forgotBtn.setOnClickListener {
 
-            val view: View = LayoutInflater.from(this).inflate(R.layout.custom_reset_password_dialog, null)
+            val view: View =
+                LayoutInflater.from(this).inflate(R.layout.custom_reset_password_dialog, null)
             val dialog = MaterialAlertDialogBuilder(this)
                 .setView(view)
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_dialog))
@@ -111,11 +111,15 @@ class LoginActivity : AppCompatActivity() {
             }
 
             view.resetBtn.setOnClickListener {
-               val email = view.resetEmailTxtInputLayout.editText?.text.toString()
-                if (email.isNotEmpty()){
-                    resetPassword(email,view)
+                val email = view.resetEmailTxtInputLayout.editText?.text.toString()
+                if (email.isNotEmpty()) {
+                    resetPassword(email, view)
                 } else {
-                    Toast.makeText(this, "You must enter an email id to send password reset link", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "You must enter an email id to send password reset link",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 
@@ -134,9 +138,9 @@ class LoginActivity : AppCompatActivity() {
 
     //Firebase register function to register new user
     private fun registerUser(
-        password:String,
-        view1: View,
-        mBottomSheetBehavior:BottomSheetBehavior<ConstraintLayout>) {
+        password: String,
+        mBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    ) {
 
         val email = emailTxtRegister.editText?.text.toString()
         if (email.isNotEmpty() && password.isNotEmpty()) {
@@ -146,13 +150,23 @@ class LoginActivity : AppCompatActivity() {
                     withContext(Dispatchers.IO) {
                         auth.createUserWithEmailAndPassword(email, password).await()
                     }
+                    val updates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(nameTxt.editText?.text.toString())
+                        .build()
+                    auth.currentUser?.updateProfile(updates)
                     check = true
                     if (check) {
-                        showDialog(view1, mBottomSheetBehavior)
+                        /* To inflate custom dialog layout file to inflate in a view and
+                        then the view is passed to the dialog builder */
+                        val factory = LayoutInflater.from(this@LoginActivity)
+                        val view: View = factory.inflate(R.layout.custom_register_dialog_container, null)
+                        showDialog(view, mBottomSheetBehavior)
                     }
-                    Toast.makeText(this@LoginActivity,
+                    Toast.makeText(
+                        this@LoginActivity,
                         "Registered",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } catch (e: Exception) {
                     passwordMatchConfirmation.text = e.message
                     passwordMatchConfirmation.visibility = View.VISIBLE
@@ -164,7 +178,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //Firebase login function to signIn existing user
-    private fun loginUser(email: String, password:String) {
+    private fun loginUser(email: String, password: String) {
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
 
@@ -173,21 +187,17 @@ class LoginActivity : AppCompatActivity() {
                     withContext(Dispatchers.IO) {
                         auth.signInWithEmailAndPassword(email, password).await()
                     }
-//                    check = true
-//                    if (check) {
-//
-//                    }
                     passwordMatchConfirmationMain.visibility = View.INVISIBLE
-                    Toast.makeText(this@LoginActivity,
-                        "Logged In",
-                        Toast.LENGTH_SHORT).show()
+                    checkLoggedInState()
                 } catch (e: Exception) {
                     passwordMatchConfirmationMain.text = e.message
                     passwordMatchConfirmationMain.visibility = View.VISIBLE
 
-                    Toast.makeText(this@LoginActivity,
+                    Toast.makeText(
+                        this@LoginActivity,
                         e.message,
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -218,16 +228,24 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun checkLoggedInState() {
-        if(auth.currentUser == null) {
-            Toast.makeText(this, "Not Logged In", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Already Logged In", Toast.LENGTH_SHORT).show()
+    private suspend fun checkLoggedInState() {
+        if (auth.currentUser != null){
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+            }
+
         }
 
     }
 
-    private fun showDialog(view1: View, mBottomSheetBehavior:BottomSheetBehavior<ConstraintLayout>){
+    private fun showDialog(
+        view1: View,
+        mBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    ) {
         signUpBtn.visibility = View.INVISIBLE
         val dialog = MaterialAlertDialogBuilder(this@LoginActivity)
             //inflated view is passed in setView()
@@ -241,12 +259,15 @@ class LoginActivity : AppCompatActivity() {
             dialog.dismiss()
             mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             signUpBtn.visibility = View.VISIBLE
+            auth.signOut()
         }
     }
 
     override fun onStart() {
+        CoroutineScope(Dispatchers.IO).launch {
+            checkLoggedInState()
+        }
         super.onStart()
-        checkLoggedInState()
     }
 
     //this method enables us to dismiss the keyboard if any space other than editText is touched
