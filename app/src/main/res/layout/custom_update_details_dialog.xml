@@ -5,25 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/lottieContainerUpdate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/dialogTitle">
-
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieUpdateIllustration"
             android:layout_width="match_parent"
-            android:background="#EC4540"
-            android:layout_height="200dp"
-            app:lottie_rawRes="@raw/reset_password"
+            android:background="@android:color/holo_green_light"
+            android:layout_height="150dp"
+            app:lottie_rawRes="@raw/form"
             app:lottie_autoPlay="true"
-            app:lottie_loop="true"/>
-
-    </LinearLayout>
+            app:lottie_loop="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <TextView
@@ -32,30 +24,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="@string/enter_email_id"
+        android:text="Enter Name"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/lottieContainerUpdate"
+        app:layout_constraintTop_toBottomOf="@id/lottieUpdateIllustration"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/resetEmailTxtInputLayout"
+        android:id="@+id/newNameTxtInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
-        android:hint="@string/email"
+        android:hint="@string/name"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="10dp"
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
         app:endIconMode="clear_text"
-        app:helperText="example@email.com"
+        app:helperText="Enter Full Name"
         app:helperTextEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,41 +59,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/resetBtn"
+        android:id="@+id/updateCredentialsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/send_reset_link"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:drawableLeft="@drawable/ic_round_update_24"
         android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/update_credentials"
         android:textAllCaps="false"
-        android:textSize="14sp"
         android:textColor="#000000"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:backgroundTint="#0BBA55"
-        android:drawableLeft="@drawable/ic_round_email_24"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetEmailTxtInputLayout"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/cancelBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="#fff"
-        app:strokeColor="@color/error"
-        app:strokeWidth="2dp"
-        android:textColor="@color/error"
-        android:drawableLeft="@drawable/ic_round_cancel_24"
-        android:text="@string/cancel"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:textAllCaps="false"
         android:textSize="14sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintEnd_toStartOf="@id/resetBtn"
+        app:backgroundTint="#0BBA55"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetEmailTxtInputLayout"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newNameTxtInputLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

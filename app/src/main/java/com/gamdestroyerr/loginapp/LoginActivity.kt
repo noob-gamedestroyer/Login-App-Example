@@ -2,7 +2,6 @@ package com.gamdestroyerr.loginapp
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,8 +34,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
-
         setContentView(R.layout.activity_login)
+        Log.d("Main", "onCreate: thread login activity ")
 
         var newPass: String?
         var conPass: String?
@@ -45,10 +44,6 @@ class LoginActivity : AppCompatActivity() {
         passwordTxtInputLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
         setPasswordTxtInput.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
         confirmPasswordTxtInput.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
-
-        /* this statement below hides the signIn and register button to show
-           above the bottom sheet */
-        bottomSheetContainer.elevation = 6f
 
         //----------------------------------------onClick Listeners------------------------------------------------------------------Start-------
         registerBtn.setOnClickListener {
@@ -67,19 +62,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         signUpBtn.setOnClickListener {
+            passwordMatchConfirmationMain.visibility = View.INVISIBLE
             newPass = setPasswordTxtInput.editText?.text.toString()
             conPass = confirmPasswordTxtInput.editText?.text.toString()
 
-            if (newPass.isNullOrBlank() || emailTxtRegister.editText?.text.toString().isBlank()) {
+            if (newPass.isNullOrBlank() || emailTxtRegister.editText?.text.toString().isBlank() || nameTxt.editText?.text.toString().isEmpty()) {
                 passwordMatchConfirmation.text = getString(R.string.not_empty_password)
                 passwordMatchConfirmation.visibility = View.VISIBLE
+
             } else if (newPass == conPass) {
                 registerUser(newPass!!, mBottomSheetBehavior)
-                passwordMatchConfirmationMain.visibility = View.INVISIBLE
             } else if (newPass != conPass) {
                 passwordMatchConfirmation.text = getString(R.string.password_mismatch)
                 passwordMatchConfirmation.visibility = View.VISIBLE
-            } else {
+            }
+            else {
                 passwordMatchConfirmation.visibility = View.INVISIBLE
             }
         }
@@ -98,7 +95,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         forgotBtn.setOnClickListener {
-
             val view: View =
                 LayoutInflater.from(this).inflate(R.layout.custom_reset_password_dialog, null)
             val dialog = MaterialAlertDialogBuilder(this)
@@ -154,14 +150,11 @@ class LoginActivity : AppCompatActivity() {
                         .setDisplayName(nameTxt.editText?.text.toString())
                         .build()
                     auth.currentUser?.updateProfile(updates)
-                    check = true
-                    if (check) {
                         /* To inflate custom dialog layout file to inflate in a view and
                         then the view is passed to the dialog builder */
-                        val factory = LayoutInflater.from(this@LoginActivity)
-                        val view: View = factory.inflate(R.layout.custom_register_dialog_container, null)
-                        showDialog(view, mBottomSheetBehavior)
-                    }
+                    auth.signOut()
+                    showDialog(mBottomSheetBehavior)
+
                     Toast.makeText(
                         this@LoginActivity,
                         "Registered",
@@ -192,12 +185,6 @@ class LoginActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     passwordMatchConfirmationMain.text = e.message
                     passwordMatchConfirmationMain.visibility = View.VISIBLE
-
-                    Toast.makeText(
-                        this@LoginActivity,
-                        e.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
 
@@ -211,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
                     withContext(Dispatchers.IO) {
                         auth.sendPasswordResetEmail(email).await()
                     }
-                    val lottie = view.lottieConfirmIllustration
+                    val lottie = view.lottieUpdateIllustration
                     lottie.setAnimation(R.raw.send_email)
                     lottie.setBackgroundColor(getColor(R.color.newBackground))
                     lottie.speed = 2f
@@ -233,9 +220,10 @@ class LoginActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                 }
                 startActivity(intent)
+                finish()
             }
 
         }
@@ -243,9 +231,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showDialog(
-        view1: View,
         mBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     ) {
+        val factory = LayoutInflater.from(this@LoginActivity)
+        val view1: View = factory.inflate(R.layout.custom_register_dialog_container, null)
         signUpBtn.visibility = View.INVISIBLE
         val dialog = MaterialAlertDialogBuilder(this@LoginActivity)
             //inflated view is passed in setView()
@@ -259,7 +248,6 @@ class LoginActivity : AppCompatActivity() {
             dialog.dismiss()
             mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             signUpBtn.visibility = View.VISIBLE
-            auth.signOut()
         }
     }
 

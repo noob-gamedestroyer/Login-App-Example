@@ -114,7 +114,6 @@
             app:layout_constraintTop_toBottomOf="@id/emailTxtRegister">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/setPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/bottomSheetContainer"
     tools:context=".LoginActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/signInImage"
         android:layout_width="223dp"
         android:layout_height="201dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_signin_image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Hello There"
+        android:text="Hello There!"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,21 +90,22 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/passwordMatchConfirmationMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="@string/password_mismatch"
-        android:visibility="invisible"
-        android:drawablePadding="4dp"
-        android:layout_marginTop="10dp"
-        android:drawableStart="@drawable/ic_round_error_24"
-        android:textColor="@color/error"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTxtInputLayout"
-        />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/passwordMatchConfirmationMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/password_mismatch"
+            android:textColor="@color/error"
+            android:textAlignment="center"
+            android:maxLines="2"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordTxtInputLayout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signInBtn"
@@ -147,17 +152,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/bottomSheetContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include layout="@layout/register_bottom_sheet"/>
+    <include layout="@layout/register_bottom_sheet"/>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

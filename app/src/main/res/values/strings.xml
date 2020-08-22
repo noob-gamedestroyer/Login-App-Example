@@ -14,9 +14,9 @@
     <string name="cancel">Cancel</string>
     <string name="sign_in_to_continue">Sign In to continue</string>
     <string name="password_mismatch">Password Mismatch</string>
-    <string name="max_lenth">Max Length 8</string>
+    <string name="max_length">Max Length 8</string>
     <string name="done">Done</string>
-    <string name="not_empty_password">Password or Email field cannot be empty</string>
+    <string name="not_empty_password">Name, Password or Email field cannot be empty</string>
     <string name="send_reset_link">Send Link</string>
     <string name="enter_email_id">Enter Email Id</string>
     <string name="sent">Resend</string>
@@ -26,9 +26,18 @@
     <string name="account_options">Account Options</string>
     <string name="update_account_details">Update Account Details</string>
     <string name="delete_account">Delete Account</string>
+    <string name="delete_acct">Delete Account?</string>
     <string name="sign_out">Sign Out</string>
     <string name="example_email">example@example.com</string>
     <string name="email_verification_status">Email Verification:</string>
-    <string name="True">true</string>
-    <string name="False">false</string>
+    <string name="True">Verified</string>
+    <string name="False">Not Verified</string>
+    <string name="follow_me_on">Follow Me On:</string>
+    <string name="update_credentials">Update Credentials</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="delete">Delete</string>
+    <string name="enter_password">Enter your Password</string>
+    <string name="password_verification_needed_for_this_operation">Password verification needed for this operation.</string>
+    <string name="verify">Verify</string>
+    <string name="you_can_t_undo_this_action">You can\'t undo this action</string>
 </resources>
