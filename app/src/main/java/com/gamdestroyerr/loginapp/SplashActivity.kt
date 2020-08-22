@@ -16,7 +16,7 @@ class SplashActivity :AppCompatActivity() {
         //Since checking for current user is a network call we use IO dispatchers of CoroutineScope
         CoroutineScope(Dispatchers.IO).launch {
                 checkLoggedInState()
-                delay(100)
+                delay(80)
         }
 
     }
@@ -30,7 +30,7 @@ class SplashActivity :AppCompatActivity() {
             val intent = Intent(this,UserAccountActivity::class.java)
             startActivity(intent)
             finish()
-        } else if (FirebaseAuth.getInstance().currentUser == null){
+        } else {
             val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent)
             finish()

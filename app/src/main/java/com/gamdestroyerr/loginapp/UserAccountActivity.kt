@@ -14,11 +14,12 @@ import androidx.core.content.ContextCompat.getDrawable
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.*
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.account_bottom_app_sheet.*
 import kotlinx.android.synthetic.main.activity_user_account.*
 import kotlinx.android.synthetic.main.custom_update_details_dialog.view.*
-import kotlinx.android.synthetic.main.delete_dialog.*
 import kotlinx.android.synthetic.main.delete_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -171,13 +172,16 @@ class UserAccountActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            val intent = Intent(this@UserAccountActivity, LoginActivity::class.java).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            val intent = Intent(this@UserAccountActivity,
+                                LoginActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                             }
                             startActivity(intent)
 
                         } catch (e:Exception) {
-                            view1.verify_password_textField.editText!!.error = e.message + " SignOut Manually or Restart the app"
+                            view1.verify_password_textField.editText!!.error = e.message +
+                                    " SignOut Manually or Restart the app"
                             Toast.makeText(this@UserAccountActivity, e.message, Toast.LENGTH_SHORT).show()
                         }
                 }

@@ -28,8 +28,6 @@ import kotlinx.coroutines.tasks.await
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private var check: Boolean = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 BottomSheetBehavior.BottomSheetCallback() {
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    cancelBtn.rotation = (slideOffset * 135)
+                    cancelBtn.rotation = (slideOffset * 360)
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -66,10 +64,11 @@ class LoginActivity : AppCompatActivity() {
             newPass = setPasswordTxtInput.editText?.text.toString()
             conPass = confirmPasswordTxtInput.editText?.text.toString()
 
-            if (newPass.isNullOrBlank() || emailTxtRegister.editText?.text.toString().isBlank() || nameTxt.editText?.text.toString().isEmpty()) {
+            if (newPass.isNullOrBlank() ||
+                emailTxtRegister.editText?.text.toString().isBlank() ||
+                nameTxt.editText?.text.toString().isEmpty()) {
                 passwordMatchConfirmation.text = getString(R.string.not_empty_password)
                 passwordMatchConfirmation.visibility = View.VISIBLE
-
             } else if (newPass == conPass) {
                 registerUser(newPass!!, mBottomSheetBehavior)
             } else if (newPass != conPass) {
@@ -181,7 +180,11 @@ class LoginActivity : AppCompatActivity() {
                         auth.signInWithEmailAndPassword(email, password).await()
                     }
                     passwordMatchConfirmationMain.visibility = View.INVISIBLE
-                    checkLoggedInState()
+                    val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(intent)
+                    finish()
                 } catch (e: Exception) {
                     passwordMatchConfirmationMain.text = e.message
                     passwordMatchConfirmationMain.visibility = View.VISIBLE
@@ -215,21 +218,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private suspend fun checkLoggedInState() {
-        if (auth.currentUser != null){
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                }
-                startActivity(intent)
-                finish()
-            }
-
-        }
-
-    }
-
     private fun showDialog(
         mBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     ) {
@@ -251,12 +239,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        CoroutineScope(Dispatchers.IO).launch {
-            checkLoggedInState()
-        }
-        super.onStart()
-    }
 
     //this method enables us to dismiss the keyboard if any space other than editText is touched
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
