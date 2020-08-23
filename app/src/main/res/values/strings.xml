@@ -42,4 +42,5 @@
     <string name="cancel">Cancel</string>
     <string name="bottom_sheet">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
     <string name="instagram_icon">instagram icon</string>
+    <string name="enter_name">Enter Name</string>
 </resources>

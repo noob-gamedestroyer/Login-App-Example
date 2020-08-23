@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Enter Name"
+        android:text="@string/enter_name"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="18sp"

@@ -24,7 +24,7 @@ class SplashActivity :AppCompatActivity() {
     //this is a suspend function to check for the current user
     //If the user is signed in this directly opens userAccountActivity
     //If not login activity is opened
-    private suspend fun checkLoggedInState(){
+    private fun checkLoggedInState(){
 
         if (FirebaseAuth.getInstance().currentUser != null){
             val intent = Intent(this,UserAccountActivity::class.java)
