@@ -17,7 +17,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieIllustration"
         android:layout_width="match_parent"
-        android:background="#38c172"
+        android:background="@color/green"
         android:layout_height="200dp"
         app:lottie_rawRes="@raw/done"
         app:lottie_autoPlay="true"

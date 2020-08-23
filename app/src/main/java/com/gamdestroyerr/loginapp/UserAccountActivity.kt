@@ -1,12 +1,13 @@
 package com.gamdestroyerr.loginapp
 
-import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,11 +30,11 @@ import kotlinx.coroutines.withContext
 
 class UserAccountActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_account)
         val currentUser = FirebaseAuth.getInstance().currentUser
-
         val mBottomAppSheetBehavior = BottomSheetBehavior.from(account_bottom_app_sheet)
         accountOptionBtn.setOnClickListener {
             //sets the state of bottom app sheet to expanded
@@ -99,7 +100,7 @@ class UserAccountActivity : AppCompatActivity() {
                             lottie.setAnimation(R.raw.done)
                             lottie.playAnimation()
                             lottie.repeatCount = LottieDrawable.RESTART
-                            lottie.background = getDrawable(this, android.R.color.holo_green_light)
+                            lottie.background = getDrawable(this, R.color.green)
                             view.updateCredentialsBtn.text = getString(R.string.dismiss)
                             view.updateCredentialsBtn.setOnClickListener {
                                 dialog.dismiss()
@@ -152,7 +153,7 @@ class UserAccountActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 val credentials = EmailAuthProvider.getCredential(email, password)
-                Log.d("delete", password+email)
+                Log.d("delete", password + email)
                     Log.d("delete", "onCreate: Re-authenticated ")
                     CoroutineScope(Dispatchers.Main).launch {
                         try {
@@ -163,7 +164,10 @@ class UserAccountActivity : AppCompatActivity() {
                             Log.d("delete", "onCreate: Re-authenticated ")
 
                             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                            inputMethodManager.hideSoftInputFromWindow(view1.applicationWindowToken,0)
+                            inputMethodManager.hideSoftInputFromWindow(
+                                view1.applicationWindowToken,
+                                0
+                            )
 
                             dialog.dismiss()
                             Toast.makeText(
@@ -172,14 +176,17 @@ class UserAccountActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            val intent = Intent(this@UserAccountActivity,
-                                LoginActivity::class.java).apply {
+                            val intent = Intent(
+                                this@UserAccountActivity,
+                                LoginActivity::class.java
+                            ).apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                        Intent.FLAG_ACTIVITY_CLEAR_TOP
                             }
                             startActivity(intent)
 
-                        } catch (e:Exception) {
+                        } catch (e: Exception) {
                             view1.verify_password_textField.editText!!.error = e.message +
                                     " SignOut Manually or Restart the app"
                             Toast.makeText(this@UserAccountActivity, e.message, Toast.LENGTH_SHORT).show()
@@ -191,14 +198,8 @@ class UserAccountActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         }
-    }
-    //this method enables us to dismiss the keyboard if any space other than editText is touched
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        cancelUserAcctBtn.setOnClickListener {
+            mBottomAppSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-        return super.dispatchTouchEvent(ev)
     }
 }
