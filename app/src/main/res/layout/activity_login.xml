@@ -13,27 +13,29 @@
 
     <ImageView
         android:id="@+id/signInImage"
-        android:layout_width="223dp"
+        android:layout_width="250dp"
         android:layout_height="201dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="12dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_signin_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/helloTxt"/>
 
     <TextView
         android:id="@+id/helloTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Hello There!"
         android:textColor="#000000"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signInImage" />
+        app:layout_constraintTop_toBottomOf="@id/signInImage"
+        app:layout_constraintBottom_toTopOf="@id/emailTxtInputLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTxtInputLayout"
@@ -41,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
         android:hint="@string/email"
         app:boxBackgroundMode="outline"
@@ -54,7 +56,8 @@
         app:helperTextEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/helloTxt">
+        app:layout_constraintTop_toBottomOf="@+id/helloTxt"
+        app:layout_constraintBottom_toTopOf="@id/passwordTxtInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -67,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="50dp"
         android:hint="@string/password"
         app:boxBackgroundMode="outline"
@@ -82,7 +85,8 @@
         app:helperTextEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailTxtInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/emailTxtInputLayout"
+        app:layout_constraintBottom_toTopOf="@id/signInBtn">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -90,60 +94,46 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/passwordMatchConfirmationMain"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/password_mismatch"
-            android:textColor="@color/error"
-            android:textAlignment="center"
-            android:maxLines="2"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTxtInputLayout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signInBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="4dp"
         android:paddingLeft="21dp"
         android:paddingRight="21dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:textAllCaps="false"
         android:text="@string/sign_in"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordMatchConfirmationMain" />
+        app:layout_constraintBottom_toTopOf="@id/registerBtn"
+        app:layout_constraintTop_toBottomOf="@id/passwordTxtInputLayout" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/registerBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="5dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        android:text="@string/register"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        app:backgroundTint="#fff"
-        app:cornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="@color/colorPrimary"
-        app:strokeWidth="1dp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="14dp"
+            android:text="@string/register"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            app:backgroundTint="#fff"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:strokeColor="@color/colorPrimary" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/forgotBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="14dp"
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackgroundBorderless"

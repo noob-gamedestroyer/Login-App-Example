@@ -1,10 +1,14 @@
 package com.gamdestroyerr.loginapp
 
+import android.app.ActionBar
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -160,6 +164,7 @@ class UserAccountActivity : AppCompatActivity() {
                             }
                             Log.d("delete", "onCreate: Re-authenticated ")
 
+                            //this will ensure that the keyboard gets dismissed as soon as this activity is closed
                             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                             inputMethodManager.hideSoftInputFromWindow(
                                 view1.applicationWindowToken,
@@ -199,4 +204,5 @@ class UserAccountActivity : AppCompatActivity() {
             mBottomAppSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
+
 }

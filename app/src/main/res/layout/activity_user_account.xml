@@ -14,27 +14,30 @@
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/profilePic"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="130dp"
             app:lottie_rawRes="@raw/profile_animation"
             app:lottie_loop="true"
             app:lottie_autoPlay="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/profileDetailContainer"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/profileDetailContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/rounded_background"
             android:elevation="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profilePic">
+            app:layout_constraintTop_toBottomOf="@+id/profilePic"
+            app:layout_constraintBottom_toTopOf="@+id/ShareTabContainer"
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/nameTitle"
@@ -150,13 +153,13 @@
             android:id="@+id/ShareTabContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/rounded_background_share"
             android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/accountOptionBtn"
             app:layout_constraintTop_toBottomOf="@+id/profileDetailContainer">
 
             <com.google.android.material.textview.MaterialTextView
@@ -177,7 +180,7 @@
                 android:id="@+id/twitter"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -193,7 +196,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -209,7 +212,7 @@
                 android:layout_width="38dp"
                 android:layout_height="43dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -226,7 +229,7 @@
             android:id="@+id/accountOptionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+
             android:drawableLeft="@drawable/ic_baseline_settings_24"
             android:padding="18dp"
             android:paddingStart="24dp"
@@ -236,7 +239,8 @@
             app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ShareTabContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

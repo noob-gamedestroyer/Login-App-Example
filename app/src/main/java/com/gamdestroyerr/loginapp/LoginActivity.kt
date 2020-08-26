@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -60,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         signUpBtn.setOnClickListener {
-            passwordMatchConfirmationMain.visibility = View.INVISIBLE
             newPass = setPasswordTxtInput.editText?.text.toString()
             conPass = confirmPasswordTxtInput.editText?.text.toString()
 
@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
                 passwordMatchConfirmation.visibility = View.VISIBLE
             }
             else {
-                passwordMatchConfirmation.visibility = View.INVISIBLE
+                passwordMatchConfirmation.visibility = View.GONE
             }
         }
 
@@ -85,11 +85,9 @@ class LoginActivity : AppCompatActivity() {
             val password: String? = passwordTxtInputLayout.editText?.text.toString()
 
             if (email.isNullOrBlank() || password.isNullOrBlank()) {
-                passwordMatchConfirmationMain.text = getString(R.string.not_empty_password)
-                passwordMatchConfirmationMain.visibility = View.VISIBLE
+                Snackbar.make(it, getString(R.string.not_empty_password), Snackbar.LENGTH_LONG).show()
             } else {
                 loginUser(email, password)
-                passwordMatchConfirmationMain.visibility = View.INVISIBLE
             }
         }
 
@@ -179,15 +177,13 @@ class LoginActivity : AppCompatActivity() {
                     withContext(Dispatchers.IO) {
                         auth.signInWithEmailAndPassword(email, password).await()
                     }
-                    passwordMatchConfirmationMain.visibility = View.INVISIBLE
                     val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                     startActivity(intent)
                     finish()
                 } catch (e: Exception) {
-                    passwordMatchConfirmationMain.text = e.message
-                    passwordMatchConfirmationMain.visibility = View.VISIBLE
+                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
                 }
             }
 
