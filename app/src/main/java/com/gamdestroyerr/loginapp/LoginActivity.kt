@@ -177,6 +177,7 @@ class LoginActivity : AppCompatActivity() {
                     withContext(Dispatchers.IO) {
                         auth.signInWithEmailAndPassword(email, password).await()
                     }
+                    Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }

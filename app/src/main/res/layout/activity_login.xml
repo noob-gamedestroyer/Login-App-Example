@@ -14,8 +14,8 @@
     <ImageView
         android:id="@+id/signInImage"
         android:layout_width="250dp"
-        android:layout_height="201dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="191dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_signin_image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,6 +124,9 @@
             android:textSize="15sp"
             app:backgroundTint="#fff"
             app:cornerRadius="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:strokeColor="@color/colorPrimary" />

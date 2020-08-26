@@ -29,8 +29,8 @@
     <string name="sign_out">Sign Out</string>
     <string name="example_email">example@example.com</string>
     <string name="email_verification_status">Email Verification:</string>
-    <string name="True">Verified</string>
-    <string name="False">Not Verified</string>
+    <string name="verified">Verified</string>
+    <string name="not_verified">Not Verified</string>
     <string name="follow_me_on">Follow Me On:</string>
     <string name="update_credentials">Update Credentials</string>
     <string name="dismiss">Dismiss</string>

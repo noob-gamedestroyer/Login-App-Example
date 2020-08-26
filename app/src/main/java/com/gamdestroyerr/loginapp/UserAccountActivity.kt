@@ -1,14 +1,10 @@
 package com.gamdestroyerr.loginapp
 
-import android.app.ActionBar
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +12,7 @@ import androidx.core.content.ContextCompat.getDrawable
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -49,9 +46,9 @@ class UserAccountActivity : AppCompatActivity() {
             emailTxt.text = user.email
             nameTxt.text = user.displayName
             if (user.isEmailVerified) {
-                emailVerified.text = getString(R.string.True)
+                emailVerified.text = getString(R.string.verified)
             } else {
-                emailVerified.text = getString(R.string.False)
+                emailVerified.text = getString(R.string.not_verified)
             }
         }
 
@@ -68,6 +65,23 @@ class UserAccountActivity : AppCompatActivity() {
         github.setOnClickListener {
             val uri: Uri = Uri.parse("https://github.com/noob-gamedestroyer/Login-App-Example")
             startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
+
+        emailVerified.setOnClickListener {
+            if (currentUser!!.isEmailVerified) {
+                Snackbar.make(it, "Email Already Verified", Snackbar.LENGTH_LONG)
+                    .show()
+            } else {
+                currentUser.sendEmailVerification().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Snackbar.make(it, "Email Verification Link Sent", Snackbar.LENGTH_LONG)
+                            .show()
+                    } else {
+                        Toast.makeText(this, task.exception!!.message, Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            }
         }
 
         //onClick Listener for SignOut btn
@@ -149,50 +163,52 @@ class UserAccountActivity : AppCompatActivity() {
                 currentUser?.let {
                     email = it.email.toString()
                 }
-                if (password.isEmpty()){
+                if (password.isEmpty()) {
                     view1.verify_password_textField.editText!!.error = "Password Field Empty"
                     return@setOnClickListener
                 }
                 val credentials = EmailAuthProvider.getCredential(email, password)
                 Log.d("delete", password + email)
-                    Log.d("delete", "onCreate: Re-authenticated ")
-                    CoroutineScope(Dispatchers.Main).launch {
-                        try {
-                            withContext(Dispatchers.IO) {
-                                currentUser?.reauthenticate(credentials)?.await()
-                                currentUser?.delete()
-                            }
-                            Log.d("delete", "onCreate: Re-authenticated ")
-
-                            //this will ensure that the keyboard gets dismissed as soon as this activity is closed
-                            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                            inputMethodManager.hideSoftInputFromWindow(
-                                view1.applicationWindowToken,
-                                0
-                            )
-
-                            dialog.dismiss()
-                            Toast.makeText(
-                                this@UserAccountActivity,
-                                "Re-authenticated and deleted successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            val intent = Intent(
-                                this@UserAccountActivity,
-                                LoginActivity::class.java
-                            ).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                                        Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            }
-                            startActivity(intent)
-
-                        } catch (e: Exception) {
-                            view1.verify_password_textField.editText!!.error = e.message +
-                                    " SignOut Manually or Restart the app"
-                            Toast.makeText(this@UserAccountActivity, e.message, Toast.LENGTH_SHORT).show()
+                Log.d("delete", "onCreate: Re-authenticated ")
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        withContext(Dispatchers.IO) {
+                            currentUser?.reauthenticate(credentials)?.await()
+                            currentUser?.delete()
                         }
+                        Log.d("delete", "onCreate: Re-authenticated ")
+
+                        //this will ensure that the keyboard gets dismissed as soon as this activity is closed
+                        val inputMethodManager =
+                            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.hideSoftInputFromWindow(
+                            view1.applicationWindowToken,
+                            0
+                        )
+
+                        dialog.dismiss()
+                        Toast.makeText(
+                            this@UserAccountActivity,
+                            "Re-authenticated and deleted successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(
+                            this@UserAccountActivity,
+                            LoginActivity::class.java
+                        ).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        }
+                        startActivity(intent)
+
+                    } catch (e: Exception) {
+                        view1.verify_password_textField.editText!!.error = e.message +
+                                " SignOut Manually or Restart the app"
+                        Toast.makeText(this@UserAccountActivity, e.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
 
