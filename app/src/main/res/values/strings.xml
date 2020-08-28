@@ -15,7 +15,7 @@
     <string name="password_mismatch">Password Mismatch</string>
     <string name="max_length">Max Length 8</string>
     <string name="done">Done</string>
-    <string name="not_empty_password">Name, Password or Email field cannot be empty</string>
+    <string name="not_empty_emPass">Email and Password field cannot be empty</string>
     <string name="send_reset_link">Send Link</string>
     <string name="enter_email_id">Enter Email Id</string>
     <string name="sent">Resend</string>
@@ -43,4 +43,5 @@
     <string name="bottom_sheet">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
     <string name="instagram_icon">instagram icon</string>
     <string name="enter_name">Enter Name</string>
+    <string name="not_empty_naEmPass">Email, Name and Password field cannot be empty</string>
 </resources>

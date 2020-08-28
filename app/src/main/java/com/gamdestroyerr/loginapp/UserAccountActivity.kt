@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,8 +27,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class UserAccountActivity : AppCompatActivity() {
 
+class UserAccountActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,66 @@ class UserAccountActivity : AppCompatActivity() {
         accountOptionBtn.setOnClickListener {
             //sets the state of bottom app sheet to expanded
             mBottomAppSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            mBottomAppSheetBehavior.addBottomSheetCallback(object :
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                    cancelUserAcctBtn.rotation = (slideOffset * 360)
+                }
+
+            })
+        }
+
+        val layoutParams = profilePic.layoutParams
+        val widDpi = resources.displayMetrics.densityDpi
+        Log.d("TAG", widDpi.toString())
+
+        //since I did not make different layout files for different screen sizes
+        //Layout adjustment is done programmatically, this method is however not recommended
+        when {
+            widDpi >= 520 -> {
+                layoutParams.height = 100.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "xxxHigh")
+            }
+            widDpi in 480..519 -> {
+                layoutParams.height = 110.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "xxHigh")
+            }
+            widDpi in 410..479 -> {
+                layoutParams.height = 125.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "xHigh")
+            }
+            widDpi in 370..409 -> {
+                layoutParams.height = 135.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "High")
+            }
+            widDpi in 350..369 -> {
+                layoutParams.height = 140.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "medium")
+            }
+            widDpi in 300..349 -> {
+                layoutParams.height = 150.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "midMedium")
+            }
+            widDpi in 260..299 -> {
+                layoutParams.height = 165.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.d("TAG", "low")
+            }
+            widDpi < 259 -> {
+                layoutParams.height = 190.toDp(this)
+                profilePic.layoutParams = layoutParams
+                Log.wtf("TAG", "superLow")
+            }
+
         }
 
         /*  This checks for the current user in the firebase database
@@ -169,14 +230,14 @@ class UserAccountActivity : AppCompatActivity() {
                 }
                 val credentials = EmailAuthProvider.getCredential(email, password)
                 Log.d("delete", password + email)
-                Log.d("delete", "onCreate: Re-authenticated ")
+                Log.d("delete", "onCreate: Re-authenticated")
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
                         withContext(Dispatchers.IO) {
                             currentUser?.reauthenticate(credentials)?.await()
                             currentUser?.delete()
                         }
-                        Log.d("delete", "onCreate: Re-authenticated ")
+                        Log.d("delete", "onCreate: Re-authenticated")
 
                         //this will ensure that the keyboard gets dismissed as soon as this activity is closed
                         val inputMethodManager =
@@ -220,5 +281,4 @@ class UserAccountActivity : AppCompatActivity() {
             mBottomAppSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
-
 }

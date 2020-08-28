@@ -2,7 +2,6 @@ package com.gamdestroyerr.loginapp
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -22,9 +22,11 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.custom_register_dialog_container.view.*
 import kotlinx.android.synthetic.main.custom_reset_password_dialog.view.*
 import kotlinx.android.synthetic.main.register_bottom_sheet.*
-import kotlinx.android.synthetic.main.register_bottom_sheet.cancelBtn
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -35,6 +37,46 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         setContentView(R.layout.activity_login)
         Log.d("Main", "onCreate: thread login activity ")
+
+        val layoutParams = signInImage.layoutParams
+        val widDpi = resources.displayMetrics.densityDpi
+        Log.d("TAG", widDpi.toString())
+
+        //since I did not make different layout files for different screen sizes
+        //Layout adjustment is done programmatically, this method is however not recommended
+        when {
+            widDpi >= 520 -> {
+                layoutParams.height = 151.toDp(this)
+                signInImage.layoutParams = layoutParams
+                Log.d("TAG", "xxHigh")
+            }
+            widDpi in 410..519 -> {
+                layoutParams.height = 161.toDp(this)
+                signInImage.layoutParams = layoutParams
+                Log.d("TAG", "xHigh")
+            }
+            widDpi in 370..409 -> {
+                layoutParams.height = 181.toDp(this)
+                signInImage.layoutParams = layoutParams
+                Log.d("TAG", "High")
+            }
+            widDpi in 300..369 -> {
+                layoutParams.height = 187.toDp(this)
+                signInImage.layoutParams = layoutParams
+                Log.d("TAG", "medium")
+            }
+            widDpi in 260..299 -> {
+                layoutParams.height = 222.toDp(this)
+                signInImage.layoutParams = layoutParams
+                Log.d("TAG", "low")
+            }
+            widDpi < 259 -> {
+                layoutParams.height = 233.toDp(this)
+                signInImage.layoutParams = layoutParams
+                Log.d("TAG", "superLow")
+            }
+
+        }
 
         var newPass: String?
         var conPass: String?
@@ -56,6 +98,13 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                        nameTxt.editText?.text?.clear()
+                        emailTxtRegister.editText?.text?.clear()
+                        setPasswordTxtInput.editText?.text?.clear()
+                        confirmPasswordTxtInput.editText?.text?.clear()
+                    }
+
                 }
             })
         }
@@ -64,19 +113,19 @@ class LoginActivity : AppCompatActivity() {
             newPass = setPasswordTxtInput.editText?.text.toString()
             conPass = confirmPasswordTxtInput.editText?.text.toString()
 
-            if (newPass.isNullOrBlank() ||
-                emailTxtRegister.editText?.text.toString().isBlank() ||
-                nameTxt.editText?.text.toString().isEmpty()) {
-                passwordMatchConfirmation.text = getString(R.string.not_empty_password)
-                passwordMatchConfirmation.visibility = View.VISIBLE
-            } else if (newPass == conPass) {
-                registerUser(newPass!!, mBottomSheetBehavior)
-            } else if (newPass != conPass) {
-                passwordMatchConfirmation.text = getString(R.string.password_mismatch)
-                passwordMatchConfirmation.visibility = View.VISIBLE
-            }
-            else {
-                passwordMatchConfirmation.visibility = View.GONE
+            when {
+                newPass.isNullOrBlank() || emailTxtRegister.editText?.text.toString()
+                    .isBlank() || nameTxt.editText?.text.toString().isEmpty() -> {
+                    Toast.makeText(this, getString(R.string.not_empty_naEmPass), Toast.LENGTH_SHORT)
+                        .show()
+                }
+                newPass == conPass -> {
+                    registerUser(newPass!!, mBottomSheetBehavior)
+                }
+                newPass != conPass -> {
+                    Toast.makeText(this, getString(R.string.password_mismatch), Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
 
@@ -85,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
             val password: String? = passwordTxtInputLayout.editText?.text.toString()
 
             if (email.isNullOrBlank() || password.isNullOrBlank()) {
-                Snackbar.make(it, getString(R.string.not_empty_password), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(it, getString(R.string.not_empty_emPass), Snackbar.LENGTH_LONG).show()
             } else {
                 loginUser(email, password)
             }
@@ -126,7 +175,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //-------------------------------------------------------------onClickListener----------------------------End----------
-
     }
 
     //Firebase register function to register new user
@@ -158,8 +206,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 } catch (e: Exception) {
-                    passwordMatchConfirmation.text = e.message
-                    passwordMatchConfirmation.visibility = View.VISIBLE
+                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
 
                 }
             }

@@ -11,11 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserAccountActivity"
-            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserAccountActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="density" />
 
-            <activity android:name=".LoginActivity"
-                android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="density" />
 
         <activity android:name=".SplashActivity"
             android:theme="@style/splash"
