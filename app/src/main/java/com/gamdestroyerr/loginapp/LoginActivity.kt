@@ -1,20 +1,18 @@
 package com.gamdestroyerr.loginapp
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -51,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("TAG", "xxHigh")
             }
             widDpi in 410..519 -> {
-                layoutParams.height = 161.toDp(this)
+                layoutParams.height = 171.toDp(this)
                 signInImage.layoutParams = layoutParams
                 Log.d("TAG", "xHigh")
             }
@@ -61,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("TAG", "High")
             }
             widDpi in 300..369 -> {
-                layoutParams.height = 187.toDp(this)
+                layoutParams.height = 184.toDp(this)
                 signInImage.layoutParams = layoutParams
                 Log.d("TAG", "medium")
             }
@@ -83,8 +81,13 @@ class LoginActivity : AppCompatActivity() {
 
         val mBottomSheetBehavior = BottomSheetBehavior.from(registerBottomSheet)
         passwordTxtInputLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+        passwordTxtInputLayout.isEndIconVisible = false
         setPasswordTxtInput.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
         confirmPasswordTxtInput.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+
+        if (passwordTxtInputLayout.isFocused) {
+            passwordTxtInputLayout.isEndIconVisible = true
+        }
 
         //----------------------------------------onClick Listeners------------------------------------------------------------------Start-------
         registerBtn.setOnClickListener {
@@ -109,34 +112,87 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
+
         signUpBtn.setOnClickListener {
             newPass = setPasswordTxtInput.editText?.text.toString()
             conPass = confirmPasswordTxtInput.editText?.text.toString()
+            val nameTxtString = nameTxt.editText?.text.toString()
+            val emailTxt = emailTxtRegister.editText?.text.toString()
+            endIconVisibility(emailTxtRegister)
+            endIconVisibility(setPasswordTxtInput)
+            endIconVisibility(confirmPasswordTxtInput)
+            endIconVisibility(nameTxt)
 
-            when {
-                newPass.isNullOrBlank() || emailTxtRegister.editText?.text.toString()
-                    .isBlank() || nameTxt.editText?.text.toString().isEmpty() -> {
-                    Toast.makeText(this, getString(R.string.not_empty_naEmPass), Toast.LENGTH_SHORT)
-                        .show()
-                }
-                newPass == conPass -> {
-                    registerUser(newPass!!, mBottomSheetBehavior)
-                }
-                newPass != conPass -> {
-                    Toast.makeText(this, getString(R.string.password_mismatch), Toast.LENGTH_SHORT)
-                        .show()
+            if (emailTxt.isEmpty() && newPass.isNullOrEmpty() && conPass.isNullOrEmpty() && nameTxtString.isEmpty()) {
+                setPasswordTxtInput.isEndIconVisible = false
+                confirmPasswordTxtInput.isEndIconVisible = false
+                nameTxt.editText?.error = getString(R.string.not_empty)
+                emailTxtRegister.editText?.error = getString(R.string.not_empty)
+                setPasswordTxtInput.editText?.error = getString(R.string.not_empty)
+                confirmPasswordTxtInput.editText?.error = getString(R.string.not_empty)
+            } else if (emailTxt.isEmpty() && newPass.isNullOrEmpty() && nameTxtString.isEmpty()) {
+                setPasswordTxtInput.isEndIconVisible = false
+                nameTxt.editText?.error = getString(R.string.not_empty)
+                emailTxtRegister.editText?.error = getString(R.string.not_empty)
+                setPasswordTxtInput.editText?.error = getString(R.string.not_empty)
+            } else if (emailTxt.isEmpty() && nameTxtString.isEmpty()) {
+                nameTxt.editText?.error = getString(R.string.not_empty)
+                emailTxtRegister.editText?.error = getString(R.string.not_empty)
+            } else {
+                when {
+                    emailTxt.isEmpty() -> {
+                        emailTxtRegister.isEndIconVisible = false
+                        emailTxtRegister.editText?.error = getString(R.string.not_empty)
+                    }
+                    newPass.isNullOrEmpty() -> {
+                        setPasswordTxtInput.isEndIconVisible = false
+                        setPasswordTxtInput.editText?.error = getString(R.string.not_empty)
+                    }
+                    conPass.isNullOrEmpty() -> {
+                        confirmPasswordTxtInput.isEndIconVisible = false
+                        confirmPasswordTxtInput.editText?.error = getString(R.string.not_empty)
+                    }
+                    nameTxtString.isEmpty() -> {
+                        nameTxt.editText?.error = getString(R.string.not_empty)
+                    }
+                    newPass == conPass -> {
+                        registerUser(newPass!!, mBottomSheetBehavior)
+                    }
+                    newPass != conPass -> {
+                        confirmPasswordTxtInput.isEndIconVisible = false
+                        confirmPasswordTxtInput.editText?.error =
+                            getString(R.string.password_mismatch)
+                    }
                 }
             }
         }
 
         signInBtn.setOnClickListener {
-            val email: String? = emailTxtInputLayout.editText?.text.toString()
-            val password: String? = passwordTxtInputLayout.editText?.text.toString()
+            val email = emailTxtInputLayout.editText?.text.toString()
+            val password = passwordTxtInputLayout.editText?.text.toString()
+            endIconVisibility(passwordTxtInputLayout)
+            endIconVisibility(emailTxtInputLayout)
 
-            if (email.isNullOrBlank() || password.isNullOrBlank()) {
-                Snackbar.make(it, getString(R.string.not_empty_emPass), Snackbar.LENGTH_LONG).show()
-            } else {
-                loginUser(email, password)
+            when {
+                email.isBlank() && password.isBlank() -> {
+                    emailTxtInputLayout.isEndIconVisible = false
+                    passwordTxtInputLayout.isEndIconVisible = false
+                    emailTxtInputLayout.editText?.error = getString(R.string.not_empty)
+                    passwordTxtInputLayout.editText?.error = getString(R.string.not_empty)
+                }
+                else -> {
+                    when {
+                        email.isEmpty() -> {
+//                            emailTxtInputLayout.isEndIconVisible = false
+                            emailTxtInputLayout.editText?.error = getString(R.string.not_empty)
+                        }
+                        password.isEmpty() -> {
+                            passwordTxtInputLayout.isEndIconVisible = false
+                            passwordTxtInputLayout.editText?.error = getString(R.string.not_empty)
+                        }
+                        else -> loginUser(email, password)
+                    }
+                }
             }
         }
 
@@ -154,10 +210,11 @@ class LoginActivity : AppCompatActivity() {
 
             view.resetBtn.setOnClickListener {
                 val email = view.resetEmailTxtInputLayout.editText?.text.toString()
-                if (email.isNotEmpty()) {
-                    resetPassword(email, view)
-                } else {
-                    Toast.makeText(
+                when {
+                    email.isNotEmpty() -> {
+                        resetPassword(email, view)
+                    }
+                    else -> Toast.makeText(
                         this,
                         "You must enter an email id to send password reset link",
                         Toast.LENGTH_LONG
@@ -195,8 +252,8 @@ class LoginActivity : AppCompatActivity() {
                         .setDisplayName(nameTxt.editText?.text.toString())
                         .build()
                     auth.currentUser?.updateProfile(updates)
-                        /* To inflate custom dialog layout file to inflate in a view and
-                        then the view is passed to the dialog builder */
+                    /* To inflate custom dialog layout file to inflate in a view and
+                    then the view is passed to the dialog builder */
                     auth.signOut()
                     showDialog(mBottomSheetBehavior)
 
@@ -207,7 +264,6 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 } catch (e: Exception) {
                     Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
-
                 }
             }
 
@@ -217,24 +273,20 @@ class LoginActivity : AppCompatActivity() {
     //Firebase login function to signIn existing user
     private fun loginUser(email: String, password: String) {
 
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-
-            CoroutineScope(Dispatchers.Main).launch {
-                try {
-                    withContext(Dispatchers.IO) {
-                        auth.signInWithEmailAndPassword(email, password).await()
-                    }
-                    Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    }
-                    startActivity(intent)
-                    finish()
-                } catch (e: Exception) {
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    auth.signInWithEmailAndPassword(email, password).await()
                 }
+                Toast.makeText(this@LoginActivity, "Logged In", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@LoginActivity, UserAccountActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+                finish()
+            } catch (e: Exception) {
+                Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
             }
-
         }
     }
 
@@ -283,14 +335,30 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun endIconVisibility(textLayout: TextInputLayout) {
+        textLayout.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
-    //this method enables us to dismiss the keyboard if any space other than editText is touched
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                textLayout.isEndIconVisible = true
+            }
 
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
+            override fun afterTextChanged(p0: Editable?) {
+                textLayout.isEndIconVisible = true
+            }
+
+        })
     }
+
+//    //this method enables us to dismiss the keyboard if any space other than editText is touched
+//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+//        if (currentFocus != null) {
+//            val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
+
+
 }

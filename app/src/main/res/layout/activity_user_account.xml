@@ -230,11 +230,11 @@
             android:id="@+id/accountOptionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:drawableLeft="@drawable/ic_baseline_settings_24"
-            android:padding="18dp"
             android:paddingStart="24dp"
+            android:paddingTop="16dp"
             android:paddingEnd="24dp"
+            android:paddingBottom="16dp"
             android:text="@string/account_options"
             android:textAllCaps="false"
             app:cornerRadius="30dp"

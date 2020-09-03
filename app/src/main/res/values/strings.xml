@@ -44,4 +44,5 @@
     <string name="instagram_icon">instagram icon</string>
     <string name="enter_name">Enter Name</string>
     <string name="not_empty_naEmPass">Email, Name and Password field cannot be empty</string>
+    <string name="not_empty">Field Cannot Be Empty</string>
 </resources>

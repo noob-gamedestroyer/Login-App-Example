@@ -9,27 +9,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="true">
 
-    <ImageView
-        android:id="@+id/signInImage"
-        android:layout_width="250dp"
-        android:layout_height="191dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_signin_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/helloTxt"/>
+        <ImageView
+            android:id="@+id/signInImage"
+            android:layout_width="250dp"
+            android:layout_height="191dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_signin_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/helloTxt" />
 
-    <TextView
-        android:id="@+id/helloTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Hello There!"
+        <TextView
+            android:id="@+id/helloTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Hello There!"
         android:textColor="#000000"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +47,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
         android:hint="@string/email"
+        app:startIconDrawable="@drawable/ic_round_email_24"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="10dp"
         app:boxCornerRadiusBottomStart="10dp"
@@ -61,7 +63,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -73,6 +76,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="50dp"
         android:hint="@string/password"
+        app:startIconDrawable="@drawable/ic_round_vpn_key_24"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="10dp"
         app:boxCornerRadiusBottomStart="10dp"
@@ -90,7 +94,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            android:maxLength="8" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,6 +113,7 @@
         android:paddingBottom="0dp"
         android:textAllCaps="false"
         android:text="@string/sign_in"
+        android:focusable="false"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +133,7 @@
             app:backgroundTint="#fff"
             app:cornerRadius="20dp"
             android:clickable="true"
-            android:focusable="true"
+            android:focusable="false"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +146,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="14dp"
         android:clickable="true"
-        android:focusable="true"
+        android:focusable="false"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:text="@string/forgot_password"
         android:textColor="@color/design_default_color_primary"

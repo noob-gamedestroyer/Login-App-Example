@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/registerBottomSheet"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
-    android:elevation="20dp"
     app:layout_behavior="@string/bottom_sheet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -14,7 +13,8 @@
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="13dp"
         android:src="@drawable/ic_round_close_24"
         app:backgroundTint="#fff"
         app:elevation="40dp"
@@ -26,40 +26,44 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/registerSheetContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/bottom_sheet_rounded"
         android:elevation="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cancelBtn">
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameTxt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="40dp"
-            app:endIconMode="clear_text"
             android:hint="@string/enter_your_full_name"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="10dp"
             app:boxCornerRadiusBottomStart="10dp"
+            app:startIconDrawable="@drawable/ic_round_person_24"
             app:boxCornerRadiusTopEnd="10dp"
             app:boxCornerRadiusTopStart="10dp"
-            app:layout_constraintTop_toTopOf="@id/registerSheetContainer"
+            app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/registerSheetContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +77,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/email"
+            app:startIconDrawable="@drawable/ic_round_email_24"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="10dp"
             app:boxCornerRadiusBottomStart="10dp"
@@ -87,7 +92,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -100,6 +107,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/set_password"
+            app:startIconDrawable="@drawable/ic_round_vpn_key_24"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="10dp"
             app:boxCornerRadiusBottomStart="10dp"
@@ -116,7 +124,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:imeOptions="actionNext"
+                android:maxLength="8" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,6 +140,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/confirm_password"
+            app:startIconDrawable="@drawable/ic_round_vpn_key_24"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="10dp"
             app:boxCornerRadiusBottomStart="10dp"
@@ -146,7 +158,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confPass"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"
+                android:maxLength="8" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,15 +170,17 @@
             android:id="@+id/signUpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:layout_marginTop="16dp"
-            android:paddingRight="21dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"
             android:paddingLeft="21dp"
+            android:paddingRight="21dp"
+            android:text="@string/sign_up"
+            android:focusable="false"
             app:cornerRadius="20dp"
-            app:layout_constraintTop_toBottomOf="@id/confirmPasswordTxtInput"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@id/confirmPasswordTxtInput" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
